@@ -600,7 +600,6 @@
 			$document['fields'][] = array( 'name' => 'url', 'type' => 'enum', 'value' => get_permalink( $post->ID ) );
 			$document['fields'][] = array( 'name' => 'timestamp', 'type' => 'date', 'value' => $post->post_date_gmt );
 			$document['fields'][] = array( 'name' => 'title', 'type' => 'string', 'value' => html_entity_decode( strip_tags( $post->post_title ), ENT_QUOTES, "UTF-8" ) );
-			$document['fields'][] = array( 'name' => 'body', 'type' => 'text', 'value' => html_entity_decode( strip_tags( $this->strip_shortcodes_retain_contents( $post->post_content ) ), ENT_QUOTES, "UTF-8" ) );
 			$document['fields'][] = array( 'name' => 'excerpt', 'type' => 'text', 'value' => html_entity_decode( strip_tags( $post->post_excerpt ), ENT_QUOTES, "UTF-8" ) );
 			$document['fields'][] = array( 'name' => 'author', 'type' => 'string', 'value' => array( $nickname, $name ) );
 			$document['fields'][] = array( 'name' => 'tags', 'type' => 'string', 'value' => $tag_strings );
@@ -612,6 +611,16 @@
 				$image = NULL;
 			}
 			$document['fields'][] = array( 'name' => 'image', 'type' => 'enum', 'value' => $image );
+
+			$body_with_custom_fields = $post->post_content;
+
+			$all_meta = get_post_custom( $post->ID );
+			foreach( $all_meta as $meta_key => $meta_value ) {
+				if (strpos($meta_key, '_') !== 0) {
+					$body_with_custom_fields .=  ' ' . (is_array( $meta_value ) ? implode( ' ', $meta_value ) : $meta_value);
+				}
+			}
+			$document['fields'][] = array( 'name' => 'body', 'type' => 'text', 'value' => html_entity_decode( strip_tags( $this->strip_shortcodes_retain_contents( $body_with_custom_fields ) ), ENT_QUOTES, "UTF-8" ) );
 
 			return $document;
 		}
@@ -684,7 +693,6 @@
 			}
 			return $allowed_post_types;
 		}
-
 	}
 
 	$swiftype_plugin = new SwiftypePlugin();
