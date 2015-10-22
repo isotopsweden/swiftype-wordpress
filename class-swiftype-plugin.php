@@ -34,6 +34,8 @@
 
 		private $max_retries = 5;
 		private $retry_delay = 2;
+		private $transition_priority = 4;
+
 
 		public function __construct() {
 			$this->api_authorized = get_option( 'swiftype_api_authorized' );
@@ -42,10 +44,10 @@
 			add_action( 'admin_init', array( $this, 'initialize_admin_screen' ) );
 
 			// hooks for sending post updates to the Swiftype API
-			add_action( 'future_to_publish' , array( $this, 'handle_future_to_publish' ) );
-			add_action( 'save_post', array( $this, 'handle_save_post' ), 99, 1 );
-			add_action( 'transition_post_status' , array( $this, 'handle_transition_post_status' ), 99, 3 );
-			add_action( 'trashed_post', array( $this, 'delete_post' ) );
+			add_action( 'future_to_publish' , array( $this, 'handle_future_to_publish' ), $transition_priority );
+			add_action( 'save_post', array( $this, 'handle_save_post' ), $transition_priority, 1 );
+			add_action( 'transition_post_status' , array( $this, 'handle_transition_post_status' ), $transition_priority, 3 );
+			add_action( 'trashed_post', array( $this, 'delete_post' ), $transition_priority );
 
 			if ( ! is_admin() ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_swiftype_assets' ) );
