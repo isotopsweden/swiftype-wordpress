@@ -111,7 +111,7 @@ class Config
     public function setFacetConfig($facetConfig)
     {
         if (!is_string($facetConfig)) {
-            $facetConfig = json_encode($facetConfig);
+            $facetConfig = sanitize_textarea_field(json_encode($facetConfig));
         }
 
         \update_option('swiftype_facet_config', $facetConfig);
