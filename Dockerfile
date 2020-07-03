@@ -1,17 +1,17 @@
 # Use the latest available CentOS 6 image
 FROM centos:centos6
 
-run rpm -Uh --quiet http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm || :
+RUN rpm -Uh --quiet http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm || :
 
-run curl -s http://yum.swiftype.net/swiftype.repo > /etc/yum.repos.d/swiftype.repo
+RUN curl -s http://yum.swiftype.net/swiftype.repo > /etc/yum.repos.d/swiftype.repo
 
-run rpm -Uh --quiet http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm || :
+RUN rpm -Uh --quiet http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm || :
 
-run yum -y update
+RUN yum -y update
 
-run yum -y install libyaml ok-ruby-2.0 rubygems make gcc gcc-c++ kernel-devel libxml2 libxml2-devel libxslt libxslt-devel openssl-devel 
+RUN yum -y install libyaml ok-ruby-2.0 rubygems make gcc gcc-c++ kernel-devel libxml2 libxml2-devel libxslt libxslt-devel openssl-devel
 
-run yum -y install Percona-Server-server-55 git which tar wget bzip2 libcurl-devel libjpeg-devel libpng-devel libmcrypt-devel readline-devel libtidy-devel php-xml php-pear php-mysql sendmail bzip2-devel libicu-devel
+RUN yum -y install Percona-Server-server-55 git which tar wget bzip2 libcurl-devel libjpeg-devel libpng-devel libmcrypt-devel readline-devel libtidy-devel php-xml php-pear php-mysql sendmail bzip2-devel libicu-devel
 
 ENV HOME /php
 WORKDIR /php
