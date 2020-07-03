@@ -1,0 +1,9 @@
+<?php xml version="1.0"?>
+<ruleset name="Swiftype-wordpress">
+  <description>Swiftype-wordpress rules for PHP_CodeSniffer</description>
+
+  <exclude-pattern>vendor/*</exclude-pattern>
+  <exclude-pattern>node_modules/*</exclude-pattern>
+
+  <rule ref="Isotop"></rule>
+</ruleset>
